@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>About - Ina</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+<h1>About Me</h1>
+
+<img src="images/me.png" width="300">
+
+<p>
+Hi. I'm Ina. I go to UCI.
+
+Bye.
+</p>
+
+</body>
+</html>
