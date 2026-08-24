@@ -95,21 +95,26 @@ async function displayEntries(entries) {
         return;
     }
 
-    // Fetch every title at the same time instead of one-by-one.
     const titles = await Promise.all(entries.map(getTitle));
 
-    for (let i = 0; i < entries.length; i++) {
+    // Pair each entry with its title so they can be sorted together.
+    let pairs = entries.map((entry, i) => ({ entry, title: titles[i] }));
 
-        const entry = entries[i];
+    // Sort by the number found in the title (e.g. "poem 01: ..." -> 1).
+    pairs.sort((a, b) => {
+        const numA = parseInt(a.title.match(/\d+/));
+        const numB = parseInt(b.title.match(/\d+/));
+        return numA - numB;
+    });
+
+    for (const { entry, title } of pairs) {
 
         const card = document.createElement("article");
         card.classList.add("gallery-entry");
 
         const link = document.createElement("a");
-
-        // Link to the actual HTML entry.
         link.href = "../" + entry.path;
-        link.textContent = titles[i];
+        link.textContent = title;
 
         card.appendChild(link);
         galleryGrid.appendChild(card);
