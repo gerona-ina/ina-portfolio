@@ -1,0 +1,27 @@
+/* Container for all the cards — arranges them in a responsive grid */
+.gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+    margin-top: 1.5rem;
+}
+
+/* Individual card styling — the "index card" look */
+.gallery-entry {
+    border: 1px solid #333;
+    padding: 1rem;
+    background-color: #fff;
+}
+
+/* Make the link fill the whole card and not look like a typical blue link */
+.gallery-entry a {
+    text-decoration: none;
+    color: inherit;
+    font-weight: 600;
+    display: block;
+}
+
+/* Optional: subtle hover feedback so cards feel clickable */
+.gallery-entry:hover {
+    border-color: #000;
+}
