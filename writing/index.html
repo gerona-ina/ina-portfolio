@@ -10,7 +10,6 @@
     <link rel="stylesheet" href="../style.css">
 </head>
 
-
 <body>
 
     <nav>
@@ -32,41 +31,36 @@
 
         <section class="gallery">
 
-            <!-- Gallery controls will go here -->
+            <div class="gallery-controls">
 
-                <div class="gallery-controls">
+                <button
+                    type="button"
+                    class="gallery-toggle active"
+                    data-category="technical">
+                    Technical
+                </button>
 
-                    <button
-                        type="button"
-                        class="gallery-toggle active"
-                        data-category="technical">
-                        Technical
-                    </button>
+                <button
+                    type="button"
+                    class="gallery-toggle"
+                    data-category="personal">
+                    Personal
+                </button>
 
-                    <button
-                        type="button"
-                        class="gallery-toggle"
-                        data-category="personal">
-                        Personal
-                    </button>
+            </div>
 
-                </div>
-
-                <div class="gallery-grid">
-                    <!-- Gallery entries will be loaded by JavaScript -->
-                </div>
-
-        </section>
-
-
-    </div>
+            <div class="gallery-grid">
+                <!-- Gallery entries will be loaded by JavaScript -->
+            </div>
 
         </section>
 
     </main>
-<!-- Load gallery.js -->
-<script src="../scripts/gallery.js"></script>
+
+    <!-- Load gallery.js -->
+    <script src="../scripts/gallery.js"></script>
 
 </body>
 
 </html>
+
