@@ -1,3 +1,7 @@
+// ============================================================
+// 1. CONFIGURATION
+// ============================================================
+
 const owner = "gerona-ina";
 const repo = "ina-portfolio";
 const branch = "main";
@@ -10,14 +14,22 @@ const categories = {
     personal: "writing/personal"
 };
 
-// parse folder
+
+// ============================================================
+// 2. FIND ENTRIES
+// ============================================================
+
+// Recursively find HTML files in a category folder.
 async function getFiles(path) {
+
     const response = await fetch(
         `https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}`
     );
 
     if (!response.ok) {
-        throw new Error(`Could not load ${path}`);
+        throw new Error(
+            `Could not load ${path}: ${response.status}`
+        );
     }
 
     const items = await response.json();
@@ -26,14 +38,19 @@ async function getFiles(path) {
 
     for (const item of items) {
 
+        // Add HTML files to the gallery.
         if (item.type === "file" && item.name.endsWith(".html")) {
+
             if (item.name !== "index.html") {
                 files.push(item);
             }
         }
 
-        if (item.type === "dir") {
+        // Search inside subfolders.
+        else if (item.type === "dir") {
+
             const subdirectoryFiles = await getFiles(item.path);
+
             files = files.concat(subdirectoryFiles);
         }
     }
@@ -41,54 +58,20 @@ async function getFiles(path) {
     return files;
 }
 
-// figure out whenever each entry was modified
-async function getModifiedDate(path) {
-    const response = await fetch(
-        `https://api.github.com/repos/${owner}/${repo}/commits?path=${encodeURIComponent(path)}&per_page=1`
-    );
 
-    if (!response.ok) {
-        throw new Error(`Could not get commit history for ${path}`);
-    }
+// ============================================================
+// 3. DISPLAY ENTRIES
+// ============================================================
 
-    const commits = await response.json();
-
-    if (commits.length === 0) {
-        return null;
-    }
-
-    return new Date(commits[0].commit.committer.date);
-}
-
-// cards
-async function createEntries(category) {
-
-    const files = await getFiles(categories[category]);
-
-    const entries = await Promise.all(
-        files.map(async file => {
-
-            const modified = await getModifiedDate(file.path);
-
-            return {
-                name: file.name,
-                path: file.path,
-                modified: modified
-            };
-        })
-    );
-
-    entries.sort((a, b) => {
-        return a.modified - b.modified;
-    });
-
-    return entries;
-}
-
-// put the cards onto the page
+// Turn discovered files into gallery cards.
 function displayEntries(entries) {
 
     galleryGrid.innerHTML = "";
+
+    if (entries.length === 0) {
+        galleryGrid.innerHTML = "<p>No entries yet.</p>";
+        return;
+    }
 
     for (const entry of entries) {
 
@@ -97,10 +80,8 @@ function displayEntries(entries) {
 
         const link = document.createElement("a");
 
-        const relativePath = entry.path.replace("writing/", "");
-
-        link.href = relativePath;
-
+        // Link to the actual HTML entry.
+        link.href = "../" + entry.path;
         link.textContent = entry.name;
 
         card.appendChild(link);
@@ -108,27 +89,52 @@ function displayEntries(entries) {
     }
 }
 
-// connect buttons
+
+// ============================================================
+// 4. CATEGORY TOGGLE
+// ============================================================
+
+// Load entries for the selected category.
 async function selectCategory(category) {
 
     toggleButtons.forEach(button => {
+
         button.classList.toggle(
             "active",
             button.dataset.category === category
         );
+
     });
 
     galleryGrid.innerHTML = "<p>Loading...</p>";
 
     try {
-        const entries = await createEntries(category);
+
+        const entries = await getFiles(categories[category]);
+
         displayEntries(entries);
+
     } catch (error) {
+
         console.error(error);
+
         galleryGrid.innerHTML =
-            "<p>Unable to load entries.</p>";
+            `<p>Unable to load entries: ${error.message}</p>`;
     }
 }
 
-// technical loads by default
+
+// ============================================================
+// 5. INITIALIZE
+// ============================================================
+
+toggleButtons.forEach(button => {
+
+    button.addEventListener("click", () => {
+        selectCategory(button.dataset.category);
+    });
+
+});
+
+// Technical is the default category.
 selectCategory("technical");
