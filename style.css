@@ -8,9 +8,14 @@
 
 /* Individual card styling — the "index card" look */
 .gallery-entry {
+    aspect-ratio: 1 / 1;
     border: 1px solid #333;
     padding: 1rem;
     background-color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
 }
 
 /* Make the link fill the whole card and not look like a typical blue link */
