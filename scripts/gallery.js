@@ -14,6 +14,13 @@ const categories = {
     personal: "writing/personal"
 };
 
+const AUDIO_FOLDER = "audios";
+const AUDIO_EXTENSIONS = [".mp3", ".m4a", ".wav"];
+
+// Strips the extension off a filename, e.g. "poem-01.wav" -> "poem-01".
+function getBaseName(filename) {
+    return filename.replace(/\.[^/.]+$/, "");
+}
 
 // ============================================================
 // 2. FIND ENTRIES
@@ -58,6 +65,28 @@ async function getFiles(path) {
     return files;
 }
 
+// Builds a lookup of basename -> audio URL from the top-level audios/ folder.
+async function getAudioMap() {
+
+    const response = await fetch(
+        `https://api.github.com/repos/${owner}/${repo}/contents/${AUDIO_FOLDER}?ref=${branch}`
+    );
+
+    if (!response.ok) {
+        return {};
+    }
+
+    const items = await response.json();
+    const map = {};
+
+    for (const item of items) {
+        if (item.type === "file" && AUDIO_EXTENSIONS.some(ext => item.name.endsWith(ext))) {
+            map[getBaseName(item.name)] = item.download_url;
+        }
+    }
+
+    return map;
+}
 
 // ============================================================
 // 3. DISPLAY ENTRIES
@@ -117,14 +146,16 @@ async function displayEntries(entries) {
         link.textContent = title;
 
         card.appendChild(link);
+        // Attach a play button + waveform if this entry has matching audio.
+        if (entry.audioUrl) {
+            attachAudioPlayer(card, entry.audioUrl);
+        }
+
         galleryGrid.appendChild(card);
     }
 }
 
-// for audioplayer 
-if (entry.audioUrl) {
-    attachAudioPlayer(card, entry.audioUrl);
-}
+
 
 // ============================================================
 // 4. CATEGORY TOGGLE
@@ -146,9 +177,16 @@ async function selectCategory(category) {
 
     try {
 
-        const entries = await getFiles(categories[category]);
+        const [entries, audioMap] = await Promise.all([
+            getFiles(categories[category]),
+            getAudioMap()
+        ]);
 
-        displayEntries(entries);
+        for (const entry of entries) {
+            entry.audioUrl = audioMap[getBaseName(entry.name)] || null;
+        }
+
+        await displayEntries(entries);
 
     } catch (error) {
 
