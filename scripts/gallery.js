@@ -63,8 +63,30 @@ async function getFiles(path) {
 // 3. DISPLAY ENTRIES
 // ============================================================
 
+// Fetch a single entry's raw HTML and pull the title out of its <h1>.
+async function getTitle(entry) {
+
+    try {
+
+        const response = await fetch(entry.download_url);
+        const html = await response.text();
+
+        // Grabs whatever is between <h1> and </h1>.
+        const match = html.match(/<h1>(.*?)<\/h1>/s);
+
+        return match ? match[1].trim() : entry.name;
+
+    } catch (error) {
+
+        console.error(`Could not read title for ${entry.name}`, error);
+
+        // Fall back to the filename if something goes wrong.
+        return entry.name;
+    }
+}
+
 // Turn discovered files into gallery cards.
-function displayEntries(entries) {
+async function displayEntries(entries) {
 
     galleryGrid.innerHTML = "";
 
@@ -73,7 +95,12 @@ function displayEntries(entries) {
         return;
     }
 
-    for (const entry of entries) {
+    // Fetch every title at the same time instead of one-by-one.
+    const titles = await Promise.all(entries.map(getTitle));
+
+    for (let i = 0; i < entries.length; i++) {
+
+        const entry = entries[i];
 
         const card = document.createElement("article");
         card.classList.add("gallery-entry");
@@ -82,13 +109,12 @@ function displayEntries(entries) {
 
         // Link to the actual HTML entry.
         link.href = "../" + entry.path;
-        link.textContent = entry.name;
+        link.textContent = titles[i];
 
         card.appendChild(link);
         galleryGrid.appendChild(card);
     }
 }
-
 
 // ============================================================
 // 4. CATEGORY TOGGLE
