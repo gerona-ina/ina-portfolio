@@ -121,6 +121,11 @@ async function displayEntries(entries) {
     }
 }
 
+// for audioplayer 
+if (entry.audioUrl) {
+    attachAudioPlayer(card, entry.audioUrl);
+}
+
 // ============================================================
 // 4. CATEGORY TOGGLE
 // ============================================================
