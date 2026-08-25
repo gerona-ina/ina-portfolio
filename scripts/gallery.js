@@ -22,6 +22,32 @@ function getBaseName(filename) {
     return filename.replace(/\.[^/.]+$/, "");
 }
 
+const IMAGE_FOLDER = "images";
+const IMAGE_EXTENSIONS = [".jpg", ".jpeg", ".png", ".webp"];
+
+// Same idea as getAudioMap, but for thumbnail images.
+async function getImageMap() {
+
+    const response = await fetch(
+        `https://api.github.com/repos/${owner}/${repo}/contents/${IMAGE_FOLDER}?ref=${branch}`
+    );
+
+    if (!response.ok) {
+        return {};
+    }
+
+    const items = await response.json();
+    const map = {};
+
+    for (const item of items) {
+        if (item.type === "file" && IMAGE_EXTENSIONS.some(ext => item.name.endsWith(ext))) {
+            map[getBaseName(item.name)] = item.download_url;
+        }
+    }
+
+    return map;
+}
+
 // ============================================================
 // 2. FIND ENTRIES
 // ============================================================
@@ -136,17 +162,30 @@ async function displayEntries(entries) {
         return numA - numB;
     });
 
-    for (const { entry, title } of pairs) {
+        for (const { entry, title } of pairs) {
 
         const card = document.createElement("article");
         card.classList.add("gallery-entry");
 
         const link = document.createElement("a");
         link.href = "../" + entry.path;
-        link.textContent = title;
+        link.classList.add("entry-link");
+
+        if (entry.imageUrl) {
+            const image = document.createElement("img");
+            image.src = entry.imageUrl;
+            image.alt = title;
+            image.classList.add("entry-thumbnail");
+            link.appendChild(image);
+        }
+
+        const titleText = document.createElement("span");
+        titleText.textContent = title;
+        titleText.classList.add("entry-title");
+        link.appendChild(titleText);
 
         card.appendChild(link);
-        // Attach a play button + waveform if this entry has matching audio.
+
         if (entry.audioUrl) {
             attachAudioPlayer(card, entry.audioUrl);
         }
@@ -195,6 +234,19 @@ async function selectCategory(category) {
         galleryGrid.innerHTML =
             `<p>Unable to load entries: ${error.message}</p>`;
     }
+            const [entries, audioMap, imageMap] = await Promise.all([
+            getFiles(categories[category]),
+            getAudioMap(),
+            getImageMap()
+        ]);
+
+        for (const entry of entries) {
+            entry.audioUrl = audioMap[getBaseName(entry.name)] || null;
+            entry.imageUrl = imageMap[getBaseName(entry.name)] || null;
+        }
+
+        await displayEntries(entries);
+
 }
 
 
