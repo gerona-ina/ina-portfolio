@@ -9,10 +9,36 @@ const branch = "main";
 const galleryGrid = document.querySelector(".gallery-grid");
 const toggleButtons = document.querySelectorAll(".gallery-toggle");
 
-const categories = {
-    technical: "writing/technical",
-    personal: "writing/personal"
-};
+// Load entries for the selected category, given its folder path.
+async function selectCategory(path, category) {
+
+    toggleButtons.forEach(button => {
+        button.classList.toggle("active", button.dataset.category === category);
+    });
+
+    galleryGrid.innerHTML = "<p>Loading...</p>";
+
+    try {
+
+        const [entries, audioMap, imageMap] = await Promise.all([
+            getFiles(path),
+            getAudioMap(),
+            getImageMap()
+        ]);
+
+        for (const entry of entries) {
+            entry.audioUrl = audioMap[getBaseName(entry.name)] || null;
+            entry.imageUrl = imageMap[getBaseName(entry.name)] || null;
+        }
+
+        await displayEntries(entries);
+
+    } catch (error) {
+
+        console.error(error);
+        galleryGrid.innerHTML = `<p>Unable to load entries: ${error.message}</p>`;
+    }
+}
 
 const AUDIO_FOLDER = "audios";
 const AUDIO_EXTENSIONS = [".mp3", ".m4a", ".wav"];
@@ -255,12 +281,13 @@ async function selectCategory(category) {
 // ============================================================
 
 toggleButtons.forEach(button => {
-
     button.addEventListener("click", () => {
-        selectCategory(button.dataset.category);
+        selectCategory(button.dataset.path, button.dataset.category);
     });
-
 });
 
-// Technical is the default category.
-selectCategory("technical");
+// Load whichever category is marked active by default in the HTML.
+const defaultButton = document.querySelector(".gallery-toggle.active");
+if (defaultButton) {
+    selectCategory(defaultButton.dataset.path, defaultButton.dataset.category);
+}
