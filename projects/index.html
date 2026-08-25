@@ -1,0 +1,76 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Projects — Ina</title>
+
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+    <nav>
+        <a href="../index.html">INA</a>
+        <a href="../about.html">ABOUT</a>
+        <a href="./">PROJECTS</a>
+        <a href="../writing/">WRITING</a>
+    </nav>
+
+    <main>
+
+        <header>
+            <h1>Projects</h1>
+
+            <p>
+                Things I've designed, made, or attempted to improve.
+            </p>
+        </header>
+
+        <section class="gallery">
+
+            <div class="gallery-controls">
+                <button
+                    type="button"
+                    class="gallery-toggle active"
+                    data-category="All">
+                    All
+                </button>
+
+                <button
+                    type="button"
+                    class="gallery-toggle active"
+                    data-category="technical">
+                    Technical
+                </button>
+
+                <button
+                    type="button"
+                    class="gallery-toggle"
+                    data-category="personal">
+                    Personal
+                </button>
+
+            </div>
+
+            <div class="gallery-grid">
+                <!-- Gallery entries will be loaded by JavaScript -->
+            </div>
+
+        </section>
+
+    </main>
+
+
+<!-- Load audio-player.js -->
+<script src="../scripts/audio-player.js"></script>
+  
+
+ <!-- Load gallery.js -->
+<script src="../scripts/gallery.js"></script>
+
+</body>
+
+</html>
