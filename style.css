@@ -10,39 +10,32 @@
 .gallery-entry {
     aspect-ratio: 1 / 1;
     border: 1px solid #333;
-    padding: 1rem;
+    padding: 0;
     background-color: #fff;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
+    overflow: hidden;
 }
 
-/* Make the link fill the whole card and not look like a typical blue link */
-.gallery-entry a {
+.entry-link {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
     text-decoration: none;
     color: inherit;
+}
+
+.entry-thumbnail {
+    width: 100%;
+    flex: 1;
+    object-fit: cover;
+}
+
+.entry-title {
+    padding: 0.75rem;
     font-weight: 600;
-    display: block;
-}
-
-/* Optional: subtle hover feedback so cards feel clickable */
-.gallery-entry:hover {
-    border-color: #000;
-}
-
-/* Individual poem entry pages */
-.poem-entry {
-    max-width: 500px;
-    margin: 3rem auto;
     text-align: center;
 }
 
-.poem-entry .date {
-    color: #666;
-    margin-bottom: 2rem;
-}
-
-.poem-entry .poem p {
-    margin: 0.5rem 0;
+.audio-player {
+    padding: 0 0.75rem 0.75rem;
 }
