@@ -1,12 +1,44 @@
-<h1> poem 03: blinds </h1>
+<!DOCTYPE html>
+<html lang="en">
 
-<p class="date">august 2026</p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<div class="poem">
-    <p> the blinds have not been </p>
-    <p> opened for some time </p>
-    <p> save to take a peak. </p>
-    <p> when a familiar sound </p>
-    <p> matches the figure of its mistress, </p>
-    <P> i do not dare leave. </P>
-</div>
+    <title>poem 02: cloth — Ina</title>
+
+    <link rel="stylesheet" href="../../../style.css">
+</head>
+
+<body>
+
+    <main class="poem-entry">
+
+        <h1> poem 03: blinds </h1>
+
+        <p class="date">august 2026</p>
+
+        <div class="poem">
+            <p> the blinds have not been </p>
+            <p> opened for some time </p>
+            <p> save to take a peak. </p>
+            <p> when a familiar sound </p>
+            <p> matches the figure of its mistress, </p>
+            <P> i do not dare leave. </P>
+        </div>
+
+        <div id="audio-player-container"></div>
+
+    </main>
+
+    <script src="../../../scripts/audio-player.js"></script>
+    <script>
+        attachAudioPlayer(
+            document.getElementById("audio-player-container"),
+            "../../../audio/poem-03.m4a"
+        );
+    </script>
+
+</body>
+
+</html>

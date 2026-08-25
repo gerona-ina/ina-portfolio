@@ -30,3 +30,19 @@
 .gallery-entry:hover {
     border-color: #000;
 }
+
+/* Individual poem entry pages */
+.poem-entry {
+    max-width: 500px;
+    margin: 3rem auto;
+    text-align: center;
+}
+
+.poem-entry .date {
+    color: #666;
+    margin-bottom: 2rem;
+}
+
+.poem-entry .poem p {
+    margin: 0.5rem 0;
+}

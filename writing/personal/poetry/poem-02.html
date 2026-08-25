@@ -1,12 +1,44 @@
-<h1> poem 02: cloth </h1>
+<!DOCTYPE html>
+<html lang="en">
 
-<p class="date">august 2026</p>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-<div class="poem">
-    <p> clothes pile up on top of each other </p>
-    <p> clean old thread, </p>
-    <p> perhaps older than my mother </p>
-    <p> resting upon cloth </p>
-    <p> that has just learned the heat </p>
-    <p> of summer. </p>
-</div>
+    <title>poem 02: cloth — Ina</title>
+
+    <link rel="stylesheet" href="../../../style.css">
+</head>
+
+<body>
+
+    <main class="poem-entry">
+
+        <h1> poem 02: cloth </h1>
+
+        <p class="date">august 2026</p>
+
+        <div class="poem">
+            <p> clothes pile up on top of each other </p>
+            <p> clean old thread, </p>
+            <p> perhaps older than my mother </p>
+            <p> resting upon cloth </p>
+            <p> that has just learned the heat </p>
+            <p> of summer. </p>
+        </div>
+
+        <div id="audio-player-container"></div>
+
+    </main>
+
+    <script src="../../../scripts/audio-player.js"></script>
+    <script>
+        attachAudioPlayer(
+            document.getElementById("audio-player-container"),
+            "../../../audio/poem-02.m4a"
+        );
+    </script>
+
+</body>
+
+</html>
