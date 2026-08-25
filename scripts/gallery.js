@@ -223,60 +223,6 @@ async function displayEntries(entries) {
 
 
 // ============================================================
-// 4. CATEGORY TOGGLE
-// ============================================================
-
-// Load entries for the selected category.
-async function selectCategory(category) {
-
-    toggleButtons.forEach(button => {
-
-        button.classList.toggle(
-            "active",
-            button.dataset.category === category
-        );
-
-    });
-
-    galleryGrid.innerHTML = "<p>Loading...</p>";
-
-    try {
-
-        const [entries, audioMap] = await Promise.all([
-            getFiles(categories[category]),
-            getAudioMap()
-        ]);
-
-        for (const entry of entries) {
-            entry.audioUrl = audioMap[getBaseName(entry.name)] || null;
-        }
-
-        await displayEntries(entries);
-
-    } catch (error) {
-
-        console.error(error);
-
-        galleryGrid.innerHTML =
-            `<p>Unable to load entries: ${error.message}</p>`;
-    }
-            const [entries, audioMap, imageMap] = await Promise.all([
-            getFiles(categories[category]),
-            getAudioMap(),
-            getImageMap()
-        ]);
-
-        for (const entry of entries) {
-            entry.audioUrl = audioMap[getBaseName(entry.name)] || null;
-            entry.imageUrl = imageMap[getBaseName(entry.name)] || null;
-        }
-
-        await displayEntries(entries);
-
-}
-
-
-// ============================================================
 // 5. INITIALIZE
 // ============================================================
 
