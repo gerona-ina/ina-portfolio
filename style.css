@@ -13,13 +13,16 @@
     padding: 0;
     background-color: #fff;
     overflow: hidden;
+    display: flex;
+    flex-direction: column;
 }
 
 .entry-link {
     display: flex;
     flex-direction: column;
     justify-content: center;
-    height: 100%;
+    flex: 1;
+    min-height: 0;
     text-decoration: none;
     color: inherit;
 }
@@ -38,4 +41,53 @@
 
 .audio-player {
     padding: 0 0.75rem 0.75rem;
+}
+
+/* Inquiries form */
+.hidden-field {
+    position: absolute;
+    left: -9999px;
+}
+
+.inquiry-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    max-width: 480px;
+    margin-top: 1.5rem;
+}
+
+.form-row {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+}
+
+.form-row label {
+    font-weight: 600;
+    font-size: 0.9rem;
+}
+
+.form-row input,
+.form-row textarea {
+    font: inherit;
+    padding: 0.6rem 0.75rem;
+    border: 1px solid #333;
+    background-color: #fff;
+    color: inherit;
+    resize: vertical;
+}
+
+.inquiry-form button {
+    align-self: flex-start;
+    font: inherit;
+    padding: 0.6rem 1.5rem;
+    border: 1px solid #333;
+    background-color: #fff;
+    cursor: pointer;
+}
+
+.inquiry-form button:hover {
+    background-color: #333;
+    color: #fff;
 }

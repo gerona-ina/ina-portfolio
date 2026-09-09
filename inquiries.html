@@ -1,0 +1,82 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Inquiries — Ina</title>
+
+    <link rel="stylesheet" href="style.css">
+</head>
+
+<body>
+
+    <nav>
+        <a href="index.html">INA</a>
+        <a href="about.html">ABOUT</a>
+        <a href="projects/index.html">PROJECTS</a>
+        <a href="writing/index.html">WRITING</a>
+        <a href="inquiries.html">INQUIRIES</a>
+    </nav>
+
+    <main>
+
+        <header>
+            <h1>Inquiries</h1>
+
+            <p>
+                Have a question, opportunity, or something to say? Fill out the form
+                below and it'll come straight to me.
+            </p>
+        </header>
+
+        <!--
+            Netlify Forms setup:
+            - name="inquiries" registers this as a form Netlify should watch for.
+            - data-netlify="true" tells Netlify to parse and handle submissions
+              (works with a plain static site, no build step required).
+            - netlify-honeypot is a hidden spam trap: bots fill it in, humans never see it.
+            - action="/inquiry-sent.html" is where the visitor lands after submitting.
+        -->
+        <form
+            class="inquiry-form"
+            name="inquiries"
+            method="POST"
+            data-netlify="true"
+            netlify-honeypot="bot-field"
+            action="/inquiry-sent.html"
+        >
+            <input type="hidden" name="form-name" value="inquiries">
+
+            <p class="hidden-field">
+                <label>Don't fill this out if you're human: <input name="bot-field"></label>
+            </p>
+
+            <div class="form-row">
+                <label for="name">Name</label>
+                <input type="text" id="name" name="name" required>
+            </div>
+
+            <div class="form-row">
+                <label for="contact">Email or phone</label>
+                <input type="text" id="contact" name="contact" required>
+            </div>
+
+            <div class="form-row">
+                <label for="subject">Subject</label>
+                <input type="text" id="subject" name="subject" required>
+            </div>
+
+            <div class="form-row">
+                <label for="message">Message</label>
+                <textarea id="message" name="message" rows="6" required></textarea>
+            </div>
+
+            <button type="submit">Send</button>
+        </form>
+
+    </main>
+
+</body>
+</html>
