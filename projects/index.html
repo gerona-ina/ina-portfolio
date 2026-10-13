@@ -4,9 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-
-    <title>Projects — Ina</title>
-
+    <title>Projects — Katrina Gerona</title>
     <link rel="stylesheet" href="../style.css">
 </head>
 
@@ -16,64 +14,123 @@
         <a href="../index.html">INA</a>
         <a href="../about.html">ABOUT</a>
         <a href="./">PROJECTS</a>
-                <a href="../writing/">WRITING</a>
+        <a href="../writing/">WRITING</a>
         <a href="../inquiries.html">INQUIRIES</a>
     </nav>
 
     <main>
 
         <header>
+            <span class="label">Portfolio</span>
             <h1>Projects</h1>
-
-            <p>
-                Things I've designed, made, or attempted to improve.
-            </p>
+            <p>Things I've designed, made, or attempted to improve.</p>
         </header>
 
-        <section class="gallery">
+        <!--
+            HOW TO ADD A PROJECT
+            1. Copy one of the project pages (e.g. lens-mounts.html) and edit the text.
+            2. Put its photos in images/projects/<project-name>/
+            3. Copy one <a class="project-card"> block below and update the link,
+               image, category (data-category), tags, title, and one-line summary.
+        -->
 
-            <div class="gallery-controls">
+        <div class="filters">
+            <button type="button" class="active" data-filter="all">All</button>
+            <button type="button" data-filter="lab">Lab Engineering</button>
+            <button type="button" data-filter="fsae">FSAE</button>
+            <button type="button" data-filter="academic">Academic</button>
+            <button type="button" data-filter="personal">Personal</button>
+        </div>
 
-                <button
-                 type="button"
-                 class="gallery-toggle active"
-                 data-category="all"
-                 data-path="projects">
-                 All
-                </button>
+        <div class="project-grid">
 
-                <button
-                 type="button"
-                 class="gallery-toggle"
-                 data-category="technical" data-path="projects/technical">
-                 Technical
-                </button>
+            <a class="project-card" href="lens-mounts.html" data-category="lab">
+                <img class="project-thumb" src="../images/projects/lens-mounts/cover.jpg" alt="Magnetic lens mounts">
+                <div class="project-body">
+                    <div class="meta"><span class="tag">Lab Engineering</span><span class="tag status-done">Completed</span></div>
+                    <h3>Magnetic Lens Mounts</h3>
+                    <p>Modular 3D-printed mounts that cut a speed-of-light lab's error from ~26% to 1.58%.</p>
+                </div>
+            </a>
 
-                <button
-                 type="button"
-                 class="gallery-toggle"
-                 data-category="personal"
-                 data-path="projects/personal">
-                 Personal
-                </button>
+            <a class="project-card" href="quincke-tube.html" data-category="lab">
+                <img class="project-thumb" src="../images/projects/quincke-tube/cover.png" alt="Quincke tube">
+                <div class="project-body">
+                    <div class="meta"><span class="tag">Lab Engineering</span><span class="tag status-done">Completed</span></div>
+                    <h3>Quincke Tube</h3>
+                    <p>A sealed, printed speaker lid that made an acoustic interference demo clearly audible.</p>
+                </div>
+            </a>
 
-            </div>
+            <a class="project-card" href="tripod-adapter.html" data-category="personal">
+                <img class="project-thumb" src="../images/projects/tripod-adapter/cover.png" alt="Tripod adapter">
+                <div class="project-body">
+                    <div class="meta"><span class="tag">Personal</span><span class="tag status-done">Completed</span></div>
+                    <h3>Tripod Adapter for DJI Osmo Action</h3>
+                    <p>Custom adapter for a legacy action camera, refined over two prototypes.</p>
+                </div>
+            </a>
 
-            <div class="gallery-grid">
-                <!-- Gallery entries will be loaded by JavaScript -->
-            </div>
+            <a class="project-card" href="hv-enclosure.html" data-category="fsae">
+                <img class="project-thumb" src="../images/projects/hv-enclosure/cover.png" alt="HV enclosure CAD">
+                <div class="project-body">
+                    <div class="meta"><span class="tag">FSAE</span><span class="tag status-wip">In progress</span></div>
+                    <h3>HV Enclosure + CAD Mockups</h3>
+                    <p>Waterproof enclosure for the high-voltage system, mounted within the chassis envelope.</p>
+                </div>
+            </a>
 
+            <a class="project-card" href="mach120.html" data-category="academic">
+                <img class="project-thumb" src="../images/projects/mach120/cover.png" alt="MACH120 final project">
+                <div class="project-body">
+                    <div class="meta"><span class="tag">Academic</span><span class="tag status-done">Completed</span></div>
+                    <h3>MACH120 Final Project</h3>
+                    <p>Machining course final project, Summer 2025.</p>
+                </div>
+            </a>
+
+            <a class="project-card" href="track-car.html" data-category="personal">
+                <img class="project-thumb" src="../images/projects/track-car/photo-1.png" alt="Daily and track car">
+                <div class="project-body">
+                    <div class="meta"><span class="tag">Personal</span><span class="tag status-wip">In progress</span></div>
+                    <h3>Daily/Track Car Project</h3>
+                    <p>Ongoing work on my daily driver and track car.</p>
+                </div>
+            </a>
+
+        </div>
+
+        <section class="section" style="margin-top: 4rem;">
+            <div class="section-head"><h2>Also working on</h2></div>
+            <!-- These don't have write-ups yet. When one does, turn it into a project page + card above. -->
+            <ul class="other-list">
+                <li><span>Chassis Manufacturing Notes (2024–2026)</span><span class="meta"><span class="tag">FSAE</span><span class="tag status-done">Completed</span></span></li>
+                <li><span>Chassis Engineering Drawing (with Inigo Jensen)</span><span class="meta"><span class="tag">FSAE</span><span class="tag status-done">Completed</span></span></li>
+                <li><span>Foam Cutter CNC Machine</span><span class="meta"><span class="tag">FSAE</span><span class="tag status-done">Completed</span></span></li>
+                <li><span>Intro to FEA with ANSYS (article)</span><span class="meta"><span class="tag">FSAE</span><span class="tag status-wip">In progress</span></span></li>
+                <li><span>Suspension + Vehicle Dynamics Notes</span><span class="meta"><span class="tag">FSAE</span><span class="tag status-wip">In progress</span></span></li>
+                <li><span>NASA NPWEE Proposal Presentation</span><span class="meta"><span class="tag">Research</span><span class="tag status-done">Completed</span></span></li>
+            </ul>
         </section>
 
     </main>
 
+    <script>
+        // Category filter: shows only cards whose data-category matches the clicked button.
+        const filterButtons = document.querySelectorAll(".filters button");
+        const cards = document.querySelectorAll(".project-card");
 
-<!-- Load audio-player.js -->
-<script src="../scripts/audio-player.js"></script>
-  
-
- <!-- Load gallery.js -->
-<script src="../scripts/gallery.js"></script>
+        filterButtons.forEach(button => {
+            button.addEventListener("click", () => {
+                const filter = button.dataset.filter;
+                filterButtons.forEach(b => b.classList.toggle("active", b === button));
+                cards.forEach(card => {
+                    card.hidden = filter !== "all" && card.dataset.category !== filter;
+                });
+            });
+        });
+    </script>
+    <script src="../scripts/placeholders.js"></script>
 
 </body>
 

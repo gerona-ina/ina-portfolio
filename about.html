@@ -1,29 +1,86 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+
 <head>
-    <title>About - Ina</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>About — Katrina Gerona</title>
     <link rel="stylesheet" href="style.css">
 </head>
 
 <body>
 
     <nav>
-    <a href="index.html">INA</a>
-    <a href="about.html">ABOUT</a>
-    <a href="projects/index.html">PROJECTS</a>
-    <a href="writing/index.html">WRITING</a>
-<a href="inquiries.html">INQUIRIES</a>
+        <a href="index.html">INA</a>
+        <a href="about.html">ABOUT</a>
+        <a href="projects/index.html">PROJECTS</a>
+        <a href="writing/index.html">WRITING</a>
+        <a href="inquiries.html">INQUIRIES</a>
     </nav>
 
-<h1>About Me</h1>
+    <main>
 
-<img src="images/me.png" width="300">
+        <div class="about-grid">
 
-<p>
-Hi. I'm Ina. I go to UCI.
+            <img class="hero-photo" src="images/me.png" alt="Katrina Gerona">
 
-Bye.
-</p>
+            <div>
+                <span class="label">About</span>
+                <h1>Katrina Gerona</h1>
+
+                <p>
+                    Hi, I'm Katrina! I'm a third-year mechanical engineering student at the University of
+                    California, Irvine. I transferred from Pasadena City College, where I spent a year and a half
+                    as a student assistant for the Physics Department, modifying and maintaining the experimental
+                    equipment used in undergraduate labs. My interests focus on mechanical design,
+                    manufacturability, and hands-on engineering systems.
+                </p>
+                <p>
+                    I formerly served as chassis lead engineer for Caltech Racing (Formula SAE EV). I oversaw
+                    subsystem integration for our legacy chassis platform: reviewing suspension and mounting
+                    modifications, defining dimensional constraints, and applying GD&amp;T principles to ensure
+                    manufacturability and proper interface alignment across vehicle systems.
+                </p>
+
+                <ul class="roles">
+                    <li><span class="label">UC Irvine</span>B.S. Mechanical Engineering, in progress</li>
+                    <li><span class="label">Caltech Racing · Formula SAE EV · 2024–2026</span>Chassis Lead Engineer</li>
+                    <li><span class="label">Pasadena City College · Physics Dept.</span>Physics Lab Assistant</li>
+                    <li><span class="label">IPAC, Caltech · Jan–Apr 2025</span>Research on high-redshift galaxies (Python photometry pipelines for JWST/ALMA data)</li>
+                    <li><span class="label">NASA NPWEE · Fall 2024</span>Lunar Seismic Spectrometer System proposal; review board chair</li>
+                    <li><span class="label">GuitarCat · 2021–present</span>Owner, guitar electronics and vintage audio restoration</li>
+                </ul>
+
+                <div class="button-row">
+                    <a class="button primary" href="https://docs.google.com/document/d/13vOrePFEdtThnsn6kIxD5ceVZcwMONhH-7QycaVPTEg/edit?usp=sharing" target="_blank" rel="noopener">View résumé ↗</a>
+                    <a class="button" href="https://www.linkedin.com/in/katrina-gerona-0a1a311b4/" target="_blank" rel="noopener">LinkedIn ↗</a>
+                    <a class="button" href="https://github.com/kg-kajiya" target="_blank" rel="noopener">GitHub ↗</a>
+                    <a class="button" href="mailto:kgerona@go.pasadena.edu">Email</a>
+                </div>
+            </div>
+
+        </div>
+
+        <figure style="margin: 4rem 0 0;">
+            <img src="images/caltech-racing.jpg" alt="Caltech Racing team with the chassis" style="width:100%; border:1px solid var(--line);">
+            <figcaption class="label" style="margin-top:0.5rem;">Caltech Racing with VAST Space</figcaption>
+        </figure>
+
+        <section class="section" style="margin-top: 4rem;">
+            <div class="section-head"><h2>Technical skills</h2></div>
+            <div class="skills">
+                <div><span class="label">CAD</span><p>SolidWorks, Siemens NX</p></div>
+                <div><span class="label">Analysis</span><p>ANSYS</p></div>
+                <div><span class="label">Manufacturing</span><p>3D printing, CAM (SolidCAM, Mastercam), laser cutting</p></div>
+                <div><span class="label">Programming</span><p>MATLAB, Python, C++, LISP</p></div>
+                <div><span class="label">Other</span><p>Project management, technical documentation, prototyping, proposals</p></div>
+            </div>
+        </section>
+
+    </main>
+
+    <script src="scripts/placeholders.js"></script>
 
 </body>
+
 </html>
