@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Katrina Gerona — Mechanical Engineer</title>
-    <meta name="description" content="Katrina (Ina) Gerona — mechanical engineering student focused on mechanical design, manufacturability, and hands-on engineering systems.">
+    <meta name="description" content="Katrina Gerona, mechanical engineering student at UC Irvine. Mechanical design, manufacturability, and hands-on engineering systems.">
     <link rel="stylesheet" href="style.css">
 </head>
 
@@ -21,69 +21,46 @@
 
     <main>
 
+        <!-- ===== Intro ===== -->
         <section class="hero">
             <div>
-                <span class="label">Mechanical Engineering</span>
+                <span class="label">Mechanical Engineering · UC Irvine</span>
                 <h1>Hi, I'm Katrina<span>.</span></h1>
                 <p class="lede">
-                    Third-year mechanical engineering student at UC Irvine and former chassis lead for
-                    Caltech Racing. I focus on mechanical design, manufacturability, and hands-on engineering systems.
+                    I'm a mechanical engineering student at UC Irvine. I design and build hands-on hardware,
+                    from Formula SAE chassis work with Caltech Racing to lab equipment that made a physics
+                    experiment 15× more accurate.
                 </p>
                 <div class="button-row">
-                    <a class="button primary" href="https://docs.google.com/document/d/13vOrePFEdtThnsn6kIxD5ceVZcwMONhH-7QycaVPTEg/edit?usp=sharing" target="_blank" rel="noopener">View résumé ↗</a>
-                    <a class="button" href="projects/index.html">See projects</a>
-                    <a class="button" href="https://www.linkedin.com/in/katrina-gerona-0a1a311b4/" target="_blank" rel="noopener">LinkedIn ↗</a>
+                    <a class="button primary" href="projects/index.html">See my projects</a>
+                    <a class="button" href="https://docs.google.com/document/d/13vOrePFEdtThnsn6kIxD5ceVZcwMONhH-7QycaVPTEg/edit?usp=sharing" target="_blank" rel="noopener">Résumé ↗</a>
+                    <a class="button" href="about.html">About me</a>
                 </div>
             </div>
-            <img class="hero-photo" src="images/me.png" alt="Katrina Gerona">
+            <img class="portrait" src="images/me.png" alt="Katrina Gerona">
         </section>
 
+        <!-- ===== Featured projects (pages with gallery-featured = true) ===== -->
         <section class="section">
             <div class="section-head">
                 <h2>Selected work</h2>
                 <a href="projects/index.html">All projects →</a>
             </div>
 
-            <div class="project-grid">
-
-                <a class="project-card" href="projects/lens-mounts.html">
-                    <img class="project-thumb" src="images/projects/lens-mounts/cover.jpg" alt="Magnetic lens mounts">
-                    <div class="project-body">
-                        <div class="meta"><span class="tag">Lab Engineering</span><span class="tag status-done">Completed</span></div>
-                        <h3>Magnetic Lens Mounts</h3>
-                        <p>Modular 3D-printed mounts that cut a speed-of-light lab's error from ~26% to 1.58%.</p>
-                    </div>
-                </a>
-
-                <a class="project-card" href="projects/quincke-tube.html">
-                    <img class="project-thumb" src="images/projects/quincke-tube/cover.png" alt="Quincke tube">
-                    <div class="project-body">
-                        <div class="meta"><span class="tag">Lab Engineering</span><span class="tag status-done">Completed</span></div>
-                        <h3>Quincke Tube</h3>
-                        <p>A sealed, printed speaker lid that made an acoustic interference demo clearly audible.</p>
-                    </div>
-                </a>
-
-                <a class="project-card" href="projects/tripod-adapter.html">
-                    <img class="project-thumb" src="images/projects/tripod-adapter/cover.png" alt="Tripod adapter">
-                    <div class="project-body">
-                        <div class="meta"><span class="tag">Personal</span><span class="tag status-done">Completed</span></div>
-                        <h3>Tripod Adapter for DJI Osmo Action</h3>
-                        <p>Custom adapter for a legacy action camera, refined over two prototypes.</p>
-                    </div>
-                </a>
-
+            <div class="gallery-grid" data-path="projects" data-featured>
+                <!-- Gallery entries will be loaded by JavaScript -->
             </div>
         </section>
 
-        <section class="section">
-            <div class="section-head"><h2>Technical skills</h2></div>
-            <div class="skills">
-                <div><span class="label">CAD</span><p>SolidWorks, Siemens NX</p></div>
-                <div><span class="label">Analysis</span><p>ANSYS</p></div>
-                <div><span class="label">Manufacturing</span><p>3D printing, CAM (SolidCAM, Mastercam), laser cutting</p></div>
-                <div><span class="label">Programming</span><p>MATLAB, Python, C++, LISP</p></div>
-                <div><span class="label">Other</span><p>Project management, technical documentation, prototyping, proposals</p></div>
+        <!-- ===== Contact ===== -->
+        <section class="contact-strip">
+            <div>
+                <h2>Let's talk</h2>
+                <p>Open to internships and co-ops in mechanical design and manufacturing.</p>
+            </div>
+            <div class="button-row">
+                <a class="button primary" href="inquiries.html">Send a message</a>
+                <a class="button" href="https://www.linkedin.com/in/katrina-gerona-0a1a311b4/" target="_blank" rel="noopener">LinkedIn ↗</a>
             </div>
         </section>
 
@@ -94,10 +71,13 @@
         <a href="mailto:kgerona@go.pasadena.edu">kgerona@go.pasadena.edu</a>
         <a href="https://www.linkedin.com/in/katrina-gerona-0a1a311b4/" target="_blank" rel="noopener">LinkedIn</a>
         <a href="https://github.com/kg-kajiya" target="_blank" rel="noopener">GitHub</a>
-        <a href="inquiries.html">Get in touch</a>
     </footer>
 
-    <script src="scripts/placeholders.js"></script>
+    <!-- Load audio-player.js -->
+    <script src="scripts/audio-player.js"></script>
+
+    <!-- Load gallery.js -->
+    <script src="scripts/gallery.js"></script>
 
 </body>
 

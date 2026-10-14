@@ -6,6 +6,11 @@ const owner = "gerona-ina";
 const repo = "ina-portfolio";
 const branch = "main";
 
+// The list of entries is written to /gallery.json by scripts/build-gallery.js
+// every time Netlify deploys. If it's missing (e.g. previewing locally without
+// running the build), we fall back to asking the GitHub API like before.
+const GALLERY_FILE = "/gallery.json";
+
 const galleryGrid = document.querySelector(".gallery-grid");
 const toggleButtons = document.querySelectorAll(".gallery-toggle");
 
@@ -16,30 +21,58 @@ async function selectCategory(path, category) {
         button.classList.toggle("active", button.dataset.category === category);
     });
 
-    galleryGrid.innerHTML = "<p>Loading...</p>";
+    galleryGrid.innerHTML = '<p class="gallery-status">Loading…</p>';
 
     try {
 
-        const [entries, audioMap, imageMap] = await Promise.all([
-            getFiles(path),
-            getAudioMap(),
-            getImageMap()
-        ]);
+        const allEntries = await getEntries();
 
-        for (const entry of entries) {
-            entry.audioUrl = audioMap[getBaseName(entry.name)] || null;
-            entry.imageUrl = imageMap[getBaseName(entry.name)] || null;
+        let entries = allEntries.filter(entry => entry.path.startsWith(path + "/"));
+
+        // Home page: only show projects marked <meta name="gallery-featured" content="true">
+        if (galleryGrid.dataset.featured !== undefined) {
+            entries = entries.filter(entry => entry.featured);
         }
 
-        await displayEntries(entries);
+        displayEntries(entries);
 
     } catch (error) {
 
         console.error(error);
-        galleryGrid.innerHTML = `<p>Unable to load entries: ${error.message}</p>`;
+        galleryGrid.innerHTML = `<p class="gallery-status">Unable to load entries: ${error.message}</p>`;
     }
 }
 
+// ============================================================
+// 2. FIND ENTRIES
+// ============================================================
+
+let entriesPromise = null;
+
+// Fetch the entry list once per page, no matter how many times a toggle is clicked.
+function getEntries() {
+    if (!entriesPromise) {
+        entriesPromise = loadGalleryFile().catch(error => {
+            console.warn("gallery.json not available, asking GitHub instead.", error);
+            return loadFromGitHub();
+        });
+    }
+    return entriesPromise;
+}
+
+async function loadGalleryFile() {
+    const response = await fetch(GALLERY_FILE, { cache: "no-cache" });
+    if (!response.ok) {
+        throw new Error(`gallery.json: ${response.status}`);
+    }
+    const data = await response.json();
+    return data.entries;
+}
+
+// ---------- Fallback: the original GitHub API approach ----------
+
+const IMAGE_FOLDER = "images";
+const IMAGE_EXTENSIONS = [".jpg", ".jpeg", ".png", ".webp"];
 const AUDIO_FOLDER = "audios";
 const AUDIO_EXTENSIONS = [".mp3", ".m4a", ".wav"];
 
@@ -48,182 +81,170 @@ function getBaseName(filename) {
     return filename.replace(/\.[^/.]+$/, "");
 }
 
-const IMAGE_FOLDER = "images";
-const IMAGE_EXTENSIONS = [".jpg", ".jpeg", ".png", ".webp"];
-
-// Same idea as getAudioMap, but for thumbnail images.
-async function getImageMap() {
-
-    const response = await fetch(
-        `https://api.github.com/repos/${owner}/${repo}/contents/${IMAGE_FOLDER}?ref=${branch}`
-    );
-
-    if (!response.ok) {
-        return {};
-    }
-
-    const items = await response.json();
-    const map = {};
-
-    for (const item of items) {
-        if (item.type === "file" && IMAGE_EXTENSIONS.some(ext => item.name.endsWith(ext))) {
-            map[getBaseName(item.name)] = item.download_url;
-        }
-    }
-
-    return map;
-}
-
-// ============================================================
-// 2. FIND ENTRIES
-// ============================================================
-
-// Recursively find HTML files in a category folder.
-async function getFiles(path) {
-
+async function githubContents(path) {
     const response = await fetch(
         `https://api.github.com/repos/${owner}/${repo}/contents/${path}?ref=${branch}`
     );
-
     if (!response.ok) {
-        throw new Error(
-            `Could not load ${path}: ${response.status}`
-        );
+        throw new Error(`Could not load ${path}: ${response.status}`);
     }
+    return response.json();
+}
 
-    const items = await response.json();
-
-    let files = [];
-
-    for (const item of items) {
-
-        // Add HTML files to the gallery.
-        if (item.type === "file" && item.name.endsWith(".html")) {
-
-            if (item.name !== "index.html") {
-                files.push(item);
+// basename -> download URL for every matching file in a top-level folder.
+async function getFileMap(folder, extensions) {
+    try {
+        const items = await githubContents(folder);
+        const map = {};
+        for (const item of items) {
+            if (item.type === "file" && extensions.some(ext => item.name.endsWith(ext))) {
+                map[getBaseName(item.name)] = item.download_url;
             }
         }
+        return map;
+    } catch {
+        return {};
+    }
+}
 
-        // Search inside subfolders.
-        else if (item.type === "dir") {
-
-            const subdirectoryFiles = await getFiles(item.path);
-
-            files = files.concat(subdirectoryFiles);
+// Recursively find HTML files in a folder.
+async function getFiles(path) {
+    const items = await githubContents(path);
+    let files = [];
+    for (const item of items) {
+        if (item.type === "file" && item.name.endsWith(".html") && item.name !== "index.html") {
+            files.push(item);
+        } else if (item.type === "dir") {
+            files = files.concat(await getFiles(item.path));
         }
     }
-
     return files;
 }
 
-// Builds a lookup of basename -> audio URL from the top-level audios/ folder.
-async function getAudioMap() {
+function readMeta(html, name) {
+    const match = html.match(new RegExp(`<meta\\s+name="${name}"\\s+content="([^"]*)"`, "i"));
+    return match ? match[1].trim() : "";
+}
 
-    const response = await fetch(
-        `https://api.github.com/repos/${owner}/${repo}/contents/${AUDIO_FOLDER}?ref=${branch}`
-    );
+async function loadFromGitHub() {
+    const section = galleryGrid.dataset.path || document.querySelector(".gallery-toggle")?.dataset.path.split("/")[0];
 
-    if (!response.ok) {
-        return {};
-    }
+    const [files, audioMap, imageMap] = await Promise.all([
+        getFiles(section),
+        getFileMap(AUDIO_FOLDER, AUDIO_EXTENSIONS),
+        getFileMap(IMAGE_FOLDER, IMAGE_EXTENSIONS)
+    ]);
 
-    const items = await response.json();
-    const map = {};
+    return Promise.all(files.map(async file => {
+        const html = await (await fetch(file.download_url)).text();
+        const title = html.match(/<h1[^>]*>(.*?)<\/h1>/s);
+        const tags = readMeta(html, "gallery-tags");
+        const base = getBaseName(file.name);
 
-    for (const item of items) {
-        if (item.type === "file" && AUDIO_EXTENSIONS.some(ext => item.name.endsWith(ext))) {
-            map[getBaseName(item.name)] = item.download_url;
-        }
-    }
-
-    return map;
+        return {
+            path: file.path,
+            title: title ? title[1].replace(/<[^>]+>/g, "").trim() : file.name,
+            summary: readMeta(html, "description"),
+            tags: tags ? tags.split(",").map(t => t.trim()) : [],
+            order: Number(readMeta(html, "gallery-order")) || null,
+            featured: readMeta(html, "gallery-featured") === "true",
+            image: imageMap[base] || null,
+            audio: audioMap[base] || null
+        };
+    }));
 }
 
 // ============================================================
 // 3. DISPLAY ENTRIES
 // ============================================================
 
-// Fetch a single entry's raw HTML and pull the title out of its <h1>.
-async function getTitle(entry) {
-
-    try {
-
-        const response = await fetch(entry.download_url);
-        const html = await response.text();
-
-        // Grabs whatever is between <h1> and </h1>.
-        const match = html.match(/<h1>(.*?)<\/h1>/s);
-
-        return match ? match[1].trim() : entry.name;
-
-    } catch (error) {
-
-        console.error(`Could not read title for ${entry.name}`, error);
-
-        // Fall back to the filename if something goes wrong.
-        return entry.name;
-    }
+// Sort by gallery-order if a page sets one, otherwise by the number in the
+// title (e.g. "poem 01: ..." -> 1), otherwise alphabetically.
+function compareEntries(a, b) {
+    const rank = entry => entry.order ?? parseInt(entry.title.match(/\d+/)) ?? Infinity;
+    const rankA = rank(a), rankB = rank(b);
+    const numA = Number.isNaN(rankA) ? Infinity : rankA;
+    const numB = Number.isNaN(rankB) ? Infinity : rankB;
+    return numA - numB || a.title.localeCompare(b.title);
 }
 
-// Turn discovered files into gallery cards.
-async function displayEntries(entries) {
+// Turn entries into gallery cards.
+function displayEntries(entries) {
 
     galleryGrid.innerHTML = "";
 
     if (entries.length === 0) {
-        galleryGrid.innerHTML = "<p>No entries yet.</p>";
+        galleryGrid.innerHTML = '<p class="gallery-status">No entries yet.</p>';
         return;
     }
 
-    const titles = await Promise.all(entries.map(getTitle));
-
-    // Pair each entry with its title so they can be sorted together.
-    let pairs = entries.map((entry, i) => ({ entry, title: titles[i] }));
-
-    // Sort by the number found in the title (e.g. "poem 01: ..." -> 1).
-    pairs.sort((a, b) => {
-        const numA = parseInt(a.title.match(/\d+/));
-        const numB = parseInt(b.title.match(/\d+/));
-        return numA - numB;
-    });
-
-        for (const { entry, title } of pairs) {
+    for (const entry of [...entries].sort(compareEntries)) {
 
         const card = document.createElement("article");
         card.classList.add("gallery-entry");
 
         const link = document.createElement("a");
-        link.href = "../" + entry.path;
+        link.href = "/" + entry.path;
         link.classList.add("entry-link");
 
-        if (entry.imageUrl) {
+        // Thumbnail: images/<same-name-as-page>.jpg|png|webp
+        // No image yet? Show a clean tile with the first tag instead.
+        if (entry.image) {
             const image = document.createElement("img");
-            image.src = entry.imageUrl;
-            image.alt = title;
+            image.src = entry.image;
+            image.alt = "";
+            image.loading = "lazy";
             image.classList.add("entry-thumbnail");
             link.appendChild(image);
+        } else if (entry.tags.length) {
+            const tile = document.createElement("div");
+            tile.classList.add("entry-thumbnail", "entry-tile");
+            tile.textContent = entry.tags[0];
+            link.appendChild(tile);
+        }
+
+        const body = document.createElement("div");
+        body.classList.add("entry-body");
+
+        if (entry.tags.length) {
+            const tagRow = document.createElement("div");
+            tagRow.classList.add("entry-tags");
+            for (const tag of entry.tags) {
+                const tagEl = document.createElement("span");
+                tagEl.classList.add("tag");
+                if (/^completed$/i.test(tag)) tagEl.classList.add("status-done");
+                if (/^in progress$/i.test(tag)) tagEl.classList.add("status-wip");
+                tagEl.textContent = tag;
+                tagRow.appendChild(tagEl);
+            }
+            body.appendChild(tagRow);
         }
 
         const titleText = document.createElement("span");
-        titleText.textContent = title;
+        titleText.textContent = entry.title;
         titleText.classList.add("entry-title");
-        link.appendChild(titleText);
+        body.appendChild(titleText);
 
+        if (entry.summary) {
+            const summary = document.createElement("p");
+            summary.textContent = entry.summary;
+            summary.classList.add("entry-summary");
+            body.appendChild(summary);
+        }
+
+        link.appendChild(body);
         card.appendChild(link);
 
-        if (entry.audioUrl) {
-            attachAudioPlayer(card, entry.audioUrl);
+        if (entry.audio) {
+            attachAudioPlayer(card, entry.audio);
         }
 
         galleryGrid.appendChild(card);
     }
 }
 
-
-
 // ============================================================
-// 5. INITIALIZE
+// 4. INITIALIZE
 // ============================================================
 
 toggleButtons.forEach(button => {
@@ -232,8 +253,11 @@ toggleButtons.forEach(button => {
     });
 });
 
-// Load whichever category is marked active by default in the HTML.
+// Load whichever category is marked active by default in the HTML,
+// or (on pages without toggles, like the home page) the grid's own data-path.
 const defaultButton = document.querySelector(".gallery-toggle.active");
 if (defaultButton) {
     selectCategory(defaultButton.dataset.path, defaultButton.dataset.category);
+} else if (galleryGrid && galleryGrid.dataset.path) {
+    selectCategory(galleryGrid.dataset.path, null);
 }
