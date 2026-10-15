@@ -28,4 +28,4 @@ The "Notion image" column lists images in the order they appear on each Notion p
 | `track-car/` | `photo-1.png` … `photo-5.png` | The 5 images, in order |
 
 Tips: keep each photo under ~500 KB (export at ~1600px wide) so pages load fast on phones.
-If your file is a .jpg instead of .png (or vice versa), either rename it or update the `src` in the HTML.
+The file extension doesn't matter: if the page expects `cover.png` and you drop in `cover.webp` (or .jpg/.jpeg), the page finds it automatically. Just keep the name before the dot the same.
