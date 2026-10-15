@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="robots" content="noindex">
+
+    <title>Admin — Ina</title>
+
+    <link rel="stylesheet" href="style.css">
+
+    <!-- Netlify Identity widget: handles login for this page. -->
+    <script src="https://identity.netlify.com/v1/netlify-identity-widget.js"></script>
+</head>
+
+<body>
+
+    <nav>
+        <a href="index.html">INA</a>
+        <a href="about.html">ABOUT</a>
+        <a href="projects/index.html">PROJECTS</a>
+        <a href="writing/index.html">WRITING</a>
+        <a href="inquiries.html">INQUIRIES</a>
+    </nav>
+
+    <main>
+
+        <header>
+            <h1>Admin</h1>
+            <p id="admin-status">Checking login…</p>
+        </header>
+
+        <!-- Shown until logged in -->
+        <div id="login-gate" style="display:none;">
+            <button type="button" id="login-btn">Log in</button>
+        </div>
+
+        <!-- Shown once logged in -->
+        <form id="entry-form" class="inquiry-form" style="display:none;">
+
+            <div class="form-row">
+                <label for="type">Type</label>
+                <select id="type" name="type" required>
+                    <option value="projects">Project</option>
+                    <option value="writing">Writing</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <label for="category">Category</label>
+                <select id="category" name="category" required>
+                    <option value="technical">Technical</option>
+                    <option value="personal">Personal</option>
+                </select>
+            </div>
+
+            <div class="form-row">
+                <label for="filename">File name (no spaces, e.g. poem-06)</label>
+                <input type="text" id="filename" name="filename" pattern="[a-z0-9\-]+" required>
+            </div>
+
+            <div class="form-row">
+                <label for="title">Title (this is what shows on the gallery card and detail page — include a number if you want it sorted, e.g. "poem 06: arroyo bridge")</label>
+                <input type="text" id="title" name="title" required>
+            </div>
+
+            <div class="form-row">
+                <label for="date">Date (e.g. "september 2026")</label>
+                <input type="text" id="date" name="date">
+            </div>
+
+            <div class="form-row">
+                <label for="body">Body (one line/paragraph per line — each becomes its own line on the page, same as your existing poems)</label>
+                <textarea id="body" name="body" rows="10" required></textarea>
+            </div>
+
+            <div class="form-row">
+                <label for="image">Thumbnail image (optional, shows on the gallery card)</label>
+                <input type="file" id="image" name="image" accept="image/png,image/jpeg,image/webp">
+            </div>
+
+            <button type="submit">Publish entry</button>
+
+            <p id="result-msg"></p>
+        </form>
+
+    </main>
+
+    <script>
+        const statusEl = document.getElementById("admin-status");
+        const loginGate = document.getElementById("login-gate");
+        const loginBtn = document.getElementById("login-btn");
+        const form = document.getElementById("entry-form");
+        const resultMsg = document.getElementById("result-msg");
+
+        function showLoggedOut() {
+            statusEl.textContent = "You need to log in to add entries.";
+            loginGate.style.display = "block";
+            form.style.display = "none";
+        }
+
+        function showLoggedIn(user) {
+            statusEl.textContent = `Logged in as ${user.email}`;
+            loginGate.style.display = "none";
+            form.style.display = "flex";
+        }
+
+        netlifyIdentity.on("init", user => {
+            user ? showLoggedIn(user) : showLoggedOut();
+        });
+
+        netlifyIdentity.on("login", user => {
+            showLoggedIn(user);
+            netlifyIdentity.close();
+        });
+
+        netlifyIdentity.on("logout", () => {
+            showLoggedOut();
+        });
+
+        loginBtn.addEventListener("click", () => netlifyIdentity.open());
+
+        netlifyIdentity.init();
+
+        // Reads a File as a base64 string (without the data: prefix).
+        function readFileAsBase64(file) {
+            return new Promise((resolve, reject) => {
+                const reader = new FileReader();
+                reader.onload = () => resolve(reader.result.split(",")[1]);
+                reader.onerror = reject;
+                reader.readAsDataURL(file);
+            });
+        }
+
+        form.addEventListener("submit", async (event) => {
+            event.preventDefault();
+            resultMsg.textContent = "Publishing…";
+
+            const user = netlifyIdentity.currentUser();
+            if (!user) {
+                resultMsg.textContent = "You're not logged in.";
+                return;
+            }
+
+            const imageFile = document.getElementById("image").files[0];
+            let imageBase64 = null;
+            let imageExt = null;
+
+            if (imageFile) {
+                if (imageFile.size > 4 * 1024 * 1024) {
+                    resultMsg.textContent = "Image is too large (max 4MB).";
+                    return;
+                }
+                imageBase64 = await readFileAsBase64(imageFile);
+                imageExt = imageFile.name.split(".").pop().toLowerCase();
+            }
+
+            const payload = {
+                type: document.getElementById("type").value,
+                category: document.getElementById("category").value,
+                filename: document.getElementById("filename").value.trim(),
+                title: document.getElementById("title").value.trim(),
+                date: document.getElementById("date").value.trim(),
+                body: document.getElementById("body").value,
+                imageBase64,
+                imageExt,
+            };
+
+            try {
+                const token = await user.jwt();
+
+                const response = await fetch("/.netlify/functions/create-entry", {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                        Authorization: `Bearer ${token}`,
+                    },
+                    body: JSON.stringify(payload),
+                });
+
+                const result = await response.json();
+
+                if (!response.ok) {
+                    throw new Error(result.error || "Something went wrong.");
+                }
+
+                resultMsg.innerHTML = `Published! <a href="/${result.path}">View entry</a>`;
+                form.reset();
+
+            } catch (error) {
+                resultMsg.textContent = `Error: ${error.message}`;
+            }
+        });
+    </script>
+
+</body>
+</html>
