@@ -620,3 +620,9 @@ footer a { color: var(--ink-2); }
 }
 
 .car-feed .project-grid { align-items: start; }
+
+.car-cover { object-position: 50% 55%; }
+.car-head.no-avatar { margin: 1.5rem 0 2.5rem; }
+.car-intro .car-avatar { display: block; margin: 1rem 0; }
+.case figure.tall img { max-width: 420px; }
+.case figure.tall img { display: block; margin-left: auto; margin-right: auto; }
