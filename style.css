@@ -510,3 +510,113 @@ footer a { color: var(--ink-2); }
     .about-grid .hero-photo { width: 200px; }
     .figure-pair { grid-template-columns: 1fr; }
 }
+
+/* ============================================================
+   CAR.KIV — profile-style section for the project car
+   ============================================================ */
+
+.car-cover {
+    width: 100%;
+    aspect-ratio: 3 / 1;
+    object-fit: cover;
+    border: 1px solid var(--line);
+    background: var(--paper-2);
+}
+
+.img-ph.car-cover { aspect-ratio: 3 / 1; }
+
+.car-head {
+    display: flex;
+    align-items: flex-end;
+    gap: 1.25rem;
+    margin: -3.25rem 0 2.5rem 1.25rem;
+    position: relative;
+}
+
+.car-avatar {
+    flex: none;
+    width: 128px;
+    height: 128px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid var(--paper);
+    box-shadow: 0 0 0 1px var(--ink);
+    background: #fff;
+}
+
+.img-ph.car-avatar { aspect-ratio: 1; padding: 0; border-radius: 50%; font-size: 0.55rem; overflow: hidden; }
+
+.car-head h1 { margin: 0; font-size: clamp(2rem, 5vw, 2.8rem); }
+.car-head .lede { margin: 0.2rem 0 0; color: var(--ink-2); }
+
+.car-layout {
+    display: grid;
+    grid-template-columns: 300px 1fr;
+    gap: 2rem;
+    align-items: start;
+}
+
+.car-intro {
+    position: sticky;
+    top: 4.5rem;
+    background: #fff;
+    border: 1px solid var(--line);
+    border-radius: var(--radius);
+    padding: 1.1rem 1.25rem;
+}
+
+.car-intro h2 { font-size: 1.1rem; margin: 0 0 0.75rem; }
+.car-intro p { font-size: 0.95rem; color: var(--ink-2); }
+
+.car-facts { list-style: none; margin: 1rem 0 0; padding: 0; border-top: 1px solid var(--line); }
+.car-facts li { padding: 0.55rem 0; border-bottom: 1px solid var(--line); font-size: 0.95rem; }
+.car-facts .label { display: block; }
+
+.bundle { margin-bottom: 3rem; }
+
+.bundle-head {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    gap: 1rem;
+    margin-bottom: 1rem;
+    padding-bottom: 0.5rem;
+    border-bottom: 1px solid var(--ink);
+}
+
+.bundle-head h2 { margin: 0; font-size: 1.3rem; }
+
+.project-card.is-draft { border-style: dashed; background: transparent; cursor: default; }
+.project-card.is-draft:hover { transform: none; box-shadow: none; border-color: var(--line); }
+
+.table-wrap { overflow-x: auto; }
+
+.spec-table {
+    width: 100%;
+    border-collapse: collapse;
+    background: #fff;
+    border: 1px solid var(--ink);
+    font-size: 0.95rem;
+    margin: 1rem 0;
+}
+
+.spec-table th,
+.spec-table td { padding: 0.6rem 0.8rem; text-align: left; border-bottom: 1px solid var(--line); }
+
+.spec-table th {
+    font-family: var(--mono);
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--ink-3);
+    font-weight: 500;
+}
+
+@media (max-width: 720px) {
+    .car-layout { grid-template-columns: 1fr; }
+    .car-intro { position: static; }
+    .car-head { margin-left: 0.5rem; }
+    .car-avatar { width: 96px; height: 96px; }
+}
+
+.car-feed .project-grid { align-items: start; }

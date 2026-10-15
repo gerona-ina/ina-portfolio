@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>car.kiv — Inari</title>
+    <meta name="description" content="Inari, my 2013 Lexus IS250: the build, the parts I chose, and what I learned about chassis tuning along the way.">
+    <link rel="stylesheet" href="../style.css">
+</head>
+
+<body>
+
+    <nav>
+        <a href="../index.html">INA</a>
+        <a href="../about.html">ABOUT</a>
+        <a href="../projects/">PROJECTS</a>
+        <a href="./">CAR.KIV</a>
+        <!-- hidden for now: <a href="../writing/">WRITING</a> -->
+        <a href="../inquiries.html">INQUIRIES</a>
+    </nav>
+
+    <main>
+
+        <!--
+            HOW THIS PAGE WORKS
+            - Profile photos: images/car/cover.jpg (wide banner) and images/car/inari.jpg (square).
+              Any of .jpg/.png/.webp works. Until they exist you'll see striped placeholders.
+            - A "bundle" is a group of articles (like a Facebook album). Copy a <section class="bundle"> block.
+            - A finished article is a link card (<a class="project-card">). An idea that isn't written yet is a
+              dashed <div class="project-card is-draft">. When you write one, turn the div into a link.
+        -->
+
+        <section class="car-profile">
+            <img class="car-cover" src="../images/car/cover.jpg" alt="Inari, a 2013 Lexus IS250">
+            <div class="car-head">
+                <img class="car-avatar" src="../images/car/inari.jpg" alt="Inari">
+                <div>
+                    <span class="label">car.kiv</span>
+                    <h1>Inari</h1>
+                    <p class="lede">2013 Lexus IS250 · daily driver · always a work in progress</p>
+                </div>
+            </div>
+        </section>
+
+        <div class="car-layout">
+
+            <aside class="car-intro">
+                <h2>Intro</h2>
+                <p>My 2013 Lexus IS250, whom I lovingly refer to as "Inari," after the fox goddess in Japanese mythology.</p>
+                <p>She was the first car I purchased entirely with my own money, as my previous car was a hand-me-down that had gone through five different people in my family. My 2007 Toyota Corolla.</p>
+                <p>Initially, I wanted the 2005 IS300. I had a friend with the GS300 and I fell in love with the sound of the 2JZ.</p>
+                <!-- TODO (Katrina): rest of the bio goes here. -->
+
+                <ul class="car-facts">
+                    <li><span class="label">Car</span>2013 Lexus IS250</li>
+                    <li><span class="label">Nickname</span>Inari</li>
+                    <li><span class="label">Role</span>Daily driver (and my only car)</li>
+                </ul>
+            </aside>
+
+            <div class="car-feed">
+
+                <section class="bundle">
+                    <div class="bundle-head">
+                        <h2>Chassis Tuning</h2>
+                        <span class="label">Where I learned the most</span>
+                    </div>
+                    <div class="project-grid">
+
+                        <a class="project-card" href="suspension.html">
+                            <img class="project-thumb" src="../images/car/suspension/cover.jpg" alt="Suspension work on Inari">
+                            <div class="project-body">
+                                <div class="meta"><span class="tag status-wip">Draft</span></div>
+                                <h3>Suspension</h3>
+                                <p>Shocks, links, control arms and bushings: what I've changed, when, and what's next.</p>
+                            </div>
+                        </a>
+
+                        <div class="project-card is-draft">
+                            <div class="project-body">
+                                <div class="meta"><span class="tag">Coming soon</span></div>
+                                <h3>Wheels &amp; Tires</h3>
+                                <p>Wheel and tire choices, and how they changed the way she drives.</p>
+                            </div>
+                        </div>
+
+                        <div class="project-card is-draft">
+                            <div class="project-body">
+                                <div class="meta"><span class="tag">Coming soon</span></div>
+                                <h3>Brakes</h3>
+                                <p>Pads, lines, and what I'd do differently.</p>
+                            </div>
+                        </div>
+
+                        <div class="project-card is-draft">
+                            <div class="project-body">
+                                <div class="meta"><span class="tag">Coming soon</span></div>
+                                <h3>Differential</h3>
+                                <p>Why I picked up a Torsen diff.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+                <section class="bundle">
+                    <div class="bundle-head">
+                        <h2>Maintenance &amp; Cooling</h2>
+                        <span class="label">Keeping her alive</span>
+                    </div>
+                    <div class="project-grid">
+
+                        <div class="project-card is-draft">
+                            <div class="project-body">
+                                <div class="meta"><span class="tag">Coming soon</span></div>
+                                <h3>Cooling System Refresh</h3>
+                                <p>OEM radiator, hoses, and everything that came with them.</p>
+                            </div>
+                        </div>
+
+                        <div class="project-card is-draft">
+                            <div class="project-body">
+                                <div class="meta"><span class="tag">Coming soon</span></div>
+                                <h3>Service History</h3>
+                                <p>Oil, fluids, filters, and mileage, kept honest.</p>
+                            </div>
+                        </div>
+
+                    </div>
+                </section>
+
+            </div>
+        </div>
+
+    </main>
+
+    <script src="../scripts/placeholders.js"></script>
+
+</body>
+
+</html>
