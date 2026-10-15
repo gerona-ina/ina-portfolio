@@ -533,44 +533,8 @@ footer a { color: var(--ink-2); }
     position: relative;
 }
 
-.car-avatar {
-    flex: none;
-    width: 128px;
-    height: 128px;
-    border-radius: 50%;
-    object-fit: cover;
-    border: 4px solid var(--paper);
-    box-shadow: 0 0 0 1px var(--ink);
-    background: #fff;
-}
-
-.img-ph.car-avatar { aspect-ratio: 1; padding: 0; border-radius: 50%; font-size: 0.55rem; overflow: hidden; }
-
 .car-head h1 { margin: 0; font-size: clamp(2rem, 5vw, 2.8rem); }
 .car-head .lede { margin: 0.2rem 0 0; color: var(--ink-2); }
-
-.car-layout {
-    display: grid;
-    grid-template-columns: 300px 1fr;
-    gap: 2rem;
-    align-items: start;
-}
-
-.car-intro {
-    position: sticky;
-    top: 4.5rem;
-    background: #fff;
-    border: 1px solid var(--line);
-    border-radius: var(--radius);
-    padding: 1.1rem 1.25rem;
-}
-
-.car-intro h2 { font-size: 1.1rem; margin: 0 0 0.75rem; }
-.car-intro p { font-size: 0.95rem; color: var(--ink-2); }
-
-.car-facts { list-style: none; margin: 1rem 0 0; padding: 0; border-top: 1px solid var(--line); }
-.car-facts li { padding: 0.55rem 0; border-bottom: 1px solid var(--line); font-size: 0.95rem; }
-.car-facts .label { display: block; }
 
 .bundle { margin-bottom: 3rem; }
 
@@ -613,16 +577,17 @@ footer a { color: var(--ink-2); }
 }
 
 @media (max-width: 720px) {
-    .car-layout { grid-template-columns: 1fr; }
-    .car-intro { position: static; }
     .car-head { margin-left: 0.5rem; }
-    .car-avatar { width: 96px; height: 96px; }
 }
 
 .car-feed .project-grid { align-items: start; }
 
 .car-cover { object-position: 50% 55%; }
 .car-head.no-avatar { margin: 1.5rem 0 2.5rem; }
-.car-intro .car-avatar { display: block; margin: 1rem 0; }
+.car-prose { max-width: 760px; }
+.car-prose p { color: var(--ink-2); }
+.car-photo { margin: 1.5rem 0; max-width: 560px; }
+.car-photo img { width: 100%; border: 1px solid var(--line); background: #fff; }
+.car-photo figcaption { font-family: var(--mono); font-size: 0.78rem; color: var(--ink-3); margin-top: 0.4rem; }
 .case figure.tall img { max-width: 420px; }
 .case figure.tall img { display: block; margin-left: auto; margin-right: auto; }
